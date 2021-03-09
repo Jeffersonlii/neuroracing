@@ -2,6 +2,10 @@
 
 class Main {
   constructor() {
+    let stats = new Stats();
+    stats.showPanel(1);
+    document.body.appendChild(stats.domElement);
+
     //setup canvas
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(
@@ -12,6 +16,7 @@ class Main {
     );
     this.camera.position.set(0, 0, 1000);
     this.camera.lookAt(0, 0, 0);
+
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
 
     this.renderer.setClearColor('white'); //background colour
@@ -27,9 +32,12 @@ class Main {
     let mg = new Mapgrid(this.scene, this.camera);
 
     const animate = () => {
+      stats.begin();
+
       requestAnimationFrame(animate);
       mg.frameupdate();
       this.renderer.render(this.scene, this.camera);
+      stats.end();
     };
     document.body.appendChild(this.renderer.domElement); // add the renderer to the actual html
     animate();

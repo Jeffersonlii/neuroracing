@@ -7,7 +7,7 @@ class Car {
       reverse: false,
     };
 
-    const geometry = new THREE.BoxGeometry(40, 20, 1);
+    const geometry = new THREE.BoxGeometry(40, 20, 100);
 
     this.rad = 0;
     this.velo = 0;
