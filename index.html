@@ -14,34 +14,9 @@
       integrity="sha512-n8IpKWzDnBOcBhRlHirMZOUvEq2bLRMuJGjuVqbzUJwtTsgwOgK5aS0c1JA647XWYfqvXve8k3PtZdzpipFjgg=="
       crossorigin="anonymous"
     ></script>
-    <script type="module">
-      //browser-sync start --server --no-online --files="**/*"
-
-      //set up threejs
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(
-        75,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        1000
-      );
-      const renderer = new THREE.WebGLRenderer({ antialias: true });
-      renderer.setClearColor('white'); //background colour
-      renderer.setSize(window.innerWidth, window.innerHeight); //size of canvas
-
-      window.addEventListener('resize', () => {
-        //fix scene onresize
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-      });
-
-      function animate() {
-        requestAnimationFrame(animate);
-        renderer.render(scene, camera);
-      }
-      document.body.appendChild(renderer.domElement); // add the renderer to the actual html
-      animate();
-    </script>
+    <script src="js/HexagonGeometry.js"></script>
+    <script src="js/car.js"></script>
+    <script src="js/mapgrid.js"></script>
+    <script src="./js/main.js"></script>
   </body>
 </html>
