@@ -41,11 +41,23 @@ class Mapgrid {
 
     document.addEventListener('mousedown', (e) => {
       // add wall when mouse down
-      this.addwall(e);
-      document.onmousemove = (e) => {
-        // continue adding wall if draggin
-        this.addwall(e);
-      };
+      switch (e.button) {
+        case 0: // LEFT CLICK
+          this.addwall(e);
+          document.onmousemove = (e) => {
+            // continue adding wall if draggin
+            this.addwall(e);
+          };
+          break;
+        case 2: // RIGHT CLICK
+          this.removeWall(e);
+          document.onmousemove = (e) => {
+            // continue adding wall if draggin
+            this.removeWall(e);
+          };
+          break;
+        default:
+      }
     });
     document.addEventListener('mouseup', (e) => {
       document.onmousemove = undefined;
@@ -74,7 +86,7 @@ class Mapgrid {
     e.preventDefault();
     const intersects = this.getCollisions(e);
 
-    if (intersects.length === 1) {
+    if (intersects.length == 1) {
       const planespot = intersects[0];
 
       let wallboxGeom = new THREE.BoxGeometry(50, 50, 50);
@@ -104,6 +116,24 @@ class Mapgrid {
       this.intersectionWatchers.push(wallUnit);
     }
   }
+
+  removeWall(e) {
+    e.preventDefault();
+    const intersects = this.getCollisions(e);
+
+    if (intersects.length !== 0) {
+      let intersect = intersects[0];
+      if (intersect.object !== this.collidingPlane) {
+        this.scene.remove(intersect.object);
+
+        this.intersectionWatchers.splice(
+          this.intersectionWatchers.indexOf(intersect.object),
+          1
+        );
+      }
+    }
+  }
+
   getCollisions(e) {
     this.mouse.set(
       (e.clientX / window.innerWidth) * 2 - 1,

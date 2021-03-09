@@ -2,6 +2,8 @@
 
 class Main {
   constructor() {
+    document.addEventListener('contextmenu', (event) => event.preventDefault()); //disable right click
+
     let stats = new Stats();
     stats.showPanel(1);
     document.body.appendChild(stats.domElement);
@@ -9,7 +11,7 @@ class Main {
     //setup canvas
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(
-      100,
+      75,
       window.innerWidth / window.innerHeight,
       0.1,
       1000
@@ -18,7 +20,6 @@ class Main {
     this.camera.lookAt(0, 0, 0);
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
-
     this.renderer.setClearColor('white'); //background colour
     this.renderer.setSize(window.innerWidth, window.innerHeight); //size of canvas
 
