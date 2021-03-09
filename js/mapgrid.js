@@ -6,6 +6,7 @@ class Mapgrid {
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
 
+    this.intersectionWatchers = []; //objects in this array are watched for (intersections)
     //add car
     this.car = new Car();
     scene.add(this.car);
@@ -32,7 +33,7 @@ class Mapgrid {
       new THREE.MeshBasicMaterial({ color: 'black' })
     );
     scene.add(this.collidingPlane);
-
+    this.intersectionWatchers.push(this.collidingPlane);
     document.addEventListener('mousemove', (e) => {
       // show the red box on hover
       this.hoverOverGrid(e);
@@ -73,24 +74,34 @@ class Mapgrid {
     e.preventDefault();
     const intersects = this.getCollisions(e);
 
-    if (intersects.length > 0) {
-      const intersect = intersects[0];
+    if (intersects.length === 1) {
+      const planespot = intersects[0];
 
-      // delete cube
-
+      let wallboxGeom = new THREE.BoxGeometry(50, 50, 50);
       let wallUnit = new THREE.Mesh(
-        new THREE.BoxGeometry(50, 50, 50),
+        wallboxGeom,
         new THREE.MeshBasicMaterial({
           color: 'blue',
         })
       );
-      wallUnit.position.copy(intersect.point).add(intersect.face.normal);
+      wallUnit.add(
+        new THREE.LineSegments(
+          new THREE.EdgesGeometry(wallboxGeom),
+          new THREE.LineBasicMaterial({
+            color: 0xffff00,
+            linewidth: 2,
+          })
+        )
+      ); // add
+
+      wallUnit.position.copy(planespot.point).add(planespot.face.normal);
       wallUnit.position
         .divideScalar(50)
         .floor()
         .multiplyScalar(50)
         .addScalar(25);
       this.scene.add(wallUnit);
+      this.intersectionWatchers.push(wallUnit);
     }
   }
   getCollisions(e) {
@@ -101,12 +112,9 @@ class Mapgrid {
 
     this.raycaster.setFromCamera(this.mouse, this.camera);
     //list of inteersects between mouse and plane
-    const intersects = this.raycaster.intersectObjects([this.collidingPlane]);
+    const intersects = this.raycaster.intersectObjects(
+      this.intersectionWatchers
+    );
     return intersects;
-  }
-
-  frameupdate() {
-    // this.grid.rotation.x += 0.001;
-    this.car.frameupdate();
   }
 }
