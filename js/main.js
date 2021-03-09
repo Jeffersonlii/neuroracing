@@ -11,7 +11,7 @@ class Main {
       1000
     );
     this.camera.position.set(0, 0, 1000);
-    // this.camera.lookAt(0, 0, 0);
+    this.camera.lookAt(0, 0, 0);
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
 
     this.renderer.setClearColor('white'); //background colour
@@ -24,7 +24,7 @@ class Main {
       this.camera.updateProjectionMatrix();
     });
 
-    let mg = new Mapgrid(this.scene);
+    let mg = new Mapgrid(this.scene, this.camera);
 
     const animate = () => {
       requestAnimationFrame(animate);

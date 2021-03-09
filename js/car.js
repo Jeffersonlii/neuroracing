@@ -72,7 +72,7 @@ class Car {
         if (this.rad === 0) this.rad = 2 * Math.PI;
         this.object.rotation.z = this.rad;
       }
-      console.log(this.velo);
+
       this.object.position.x += Math.cos(this.rad) * this.velo;
       this.object.position.y += Math.sin(this.rad) * this.velo;
 
